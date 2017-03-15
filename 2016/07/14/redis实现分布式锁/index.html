@@ -4,6 +4,9 @@
   <meta charset="utf-8">
   
   
+  <meta name="description" content="Redis提供一些命令SETNX，GETSET，可以方便实现分布式锁机制。
+相关命令介绍SETNX命令（SET if Not eXists）语法：SETNX key value功能：当且仅当 key 不存在，将 key 的值设为 value ，并返回1；若给定的 key 已经存在，则 SETNX 不" />
+  
 
   
   
@@ -11,15 +14,24 @@
   
   
   
-  <title>categories | 古韦</title>
+  <title>redis实现分布式锁 | 古韦</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="categories">
-<meta property="og:url" content="http://yoursite.com/categories/index.html">
+  <meta name="description" content="Redis提供一些命令SETNX，GETSET，可以方便实现分布式锁机制。
+相关命令介绍SETNX命令（SET if Not eXists）语法：SETNX key value功能：当且仅当 key 不存在，将 key 的值设为 value ，并返回1；若给定的 key 已经存在，则 SETNX 不做任何动作，并返回0。
+GETSET命令语法：GETSET key value功能：将给定 key">
+<meta property="og:type" content="article">
+<meta property="og:title" content="redis实现分布式锁">
+<meta property="og:url" content="http://yoursite.com/2016/07/14/redis实现分布式锁/index.html">
 <meta property="og:site_name" content="古韦">
-<meta property="og:updated_time" content="2016-07-15T06:58:18.377Z">
+<meta property="og:description" content="Redis提供一些命令SETNX，GETSET，可以方便实现分布式锁机制。
+相关命令介绍SETNX命令（SET if Not eXists）语法：SETNX key value功能：当且仅当 key 不存在，将 key 的值设为 value ，并返回1；若给定的 key 已经存在，则 SETNX 不做任何动作，并返回0。
+GETSET命令语法：GETSET key value功能：将给定 key">
+<meta property="og:updated_time" content="2017-03-15T09:39:39.414Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="categories">
+<meta name="twitter:title" content="redis实现分布式锁">
+<meta name="twitter:description" content="Redis提供一些命令SETNX，GETSET，可以方便实现分布式锁机制。
+相关命令介绍SETNX命令（SET if Not eXists）语法：SETNX key value功能：当且仅当 key 不存在，将 key 的值设为 value ，并返回1；若给定的 key 已经存在，则 SETNX 不做任何动作，并返回0。
+GETSET命令语法：GETSET key value功能：将给定 key">
   
   
     <link rel="icon" href="/css/images/favicon.ico">
@@ -59,7 +71,7 @@
     </nav>
 </header>
       <div id="main" class="wrapper">
-        <div id="primary" class="site-content"><div id="content" role="main"><article id="page-undefined" class="page-undefined post type-post status-publish format-standard hentry">
+        <div id="primary" class="site-content"><div id="content" role="main"><article id="post-redis实现分布式锁" class="post-redis实现分布式锁 post type-post status-publish format-standard hentry">
     <!---->
 
       <header class="entry-header">
@@ -67,38 +79,61 @@
         
   
     <h1 class="entry-title article-title">
-      categories
+      redis实现分布式锁
     </h1>
   
 
         
         <div class="comments-link">
             
-            <a href="/categories/index.html#comments" class="leave-reply">Reply</a>
+            <a href="/2016/07/14/redis实现分布式锁/#comments" class="leave-reply">Reply</a>
             
-            <a href="javascript:void(0);" data-url="http://yoursite.com/categories/index.html" data-id="cj0as6cye0001rslqeh1hqfew" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://yoursite.com/2016/07/14/redis实现分布式锁/" data-id="cj0as6cyg0002rslqxtxe1l69" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
     <div class="entry-content">
       
-        
+        <p>Redis提供一些命令SETNX，GETSET，可以方便实现分布式锁机制。</p>
+<h2 id="相关命令介绍"><a href="#相关命令介绍" class="headerlink" title="相关命令介绍"></a>相关命令介绍</h2><p>SETNX命令（SET if Not eXists）<br>语法：<br>SETNX key value<br>功能：<br>当且仅当 key 不存在，将 key 的值设为 value ，并返回1；若给定的 key 已经存在，则 SETNX 不做任何动作，并返回0。</p>
+<p>GETSET命令<br>语法：<br>GETSET key value<br>功能：<br>将给定 key 的值设为 value ，并返回 key 的旧值 (old value)，当 key 存在但不是字符串类型时，返回一个错误，当key不存在时，返回nil。</p>
+<p>GET命令<br>语法：<br>GET key<br>功能：<br>返回 key 所关联的字符串值，如果 key 不存在那么返回特殊值 nil 。</p>
+<p>DEL命令<br>语法：<br>DEL key [KEY …]<br>功能：<br>删除给定的一个或多个 key ,不存在的 key 会被忽略。</p>
+
       
     </div><!-- .entry-content -->
 
     <footer class="entry-meta">
-    <a href="/categories/index.html">
-    <time datetime="2016-07-15T06:57:00.000Z" class="entry-date">
-        2016-07-15
+    <a href="/2016/07/14/redis实现分布式锁/">
+    <time datetime="2016-07-14T03:49:47.000Z" class="entry-date">
+        2016-07-14
     </time>
 </a>
     
+  <span class="article-delim">&#8226;</span>
+  <div class="article-category">
+  <a class="article-category-link" href="/categories/redis/">redis</a>
+  </div>
+
     
+  <span class="article-delim">&#8226;</span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/redis/">redis</a></li></ul>
+
     </footer>
 </article>
 
 
     
+<nav class="nav-single">
+    <h3 class="assistive-text">文章导航</h3>
+    
+        <span class="nav-previous"><a href="/2016/07/14/Hello-Jack/" rel="prev"><span class="meta-nav">←</span> Hello Jack</a></span>
+    
+    
+        <span class="nav-next"><a href="/2016/07/14/hello-world/" rel="next">Hello World <span class="meta-nav">→</span></a></span>
+    
+</nav><!-- .nav-single -->
+
 
 
 
@@ -106,7 +141,7 @@
 
 <section id="comments">
   <!-- 多说评论框 start -->
-  <div class="ds-thread" data-thread-key="page-undefined" data-title="categories" data-url="http://yoursite.com/categories/index.html"></div>
+  <div class="ds-thread" data-thread-key="post-redis实现分布式锁" data-title="redis实现分布式锁" data-url="http://yoursite.com/2016/07/14/redis实现分布式锁/"></div>
   <!-- 多说评论框 end -->
   <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
   <script type="text/javascript">
