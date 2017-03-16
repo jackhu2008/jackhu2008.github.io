@@ -4,8 +4,14 @@
   <meta charset="utf-8">
   
   
-  <meta name="description" content="Redis提供一些命令SETNX，GETSET，可以方便实现分布式锁。
-相关命令介绍SETNX命令（SET if Not eXists）语法：SETNX key value功能：当且仅当 key 不存在，将 key 的值设为 value ，并返回1；若给定的 key 已经存在，则 SETNX 不做任" />
+  <meta name="description" content="分布式锁有哪些问题？
+避免多个client获得锁
+获得锁的client崩溃了，如何解锁？
+如何快速获得、释放锁？
+
+Redis是内存存储的数据结构数据库，采用单进程单线程模式，使并发访问变成了串行访问，避免了并发的竞态条件。以下是涉及到的几个命令：
+相关命令
+SETNX（SET if Not eXi" />
   
 
   
@@ -14,24 +20,45 @@
   
   
   
-  <title>古韦</title>
+  <title>redis实现分布式锁 | 古韦</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Redis提供一些命令SETNX，GETSET，可以方便实现分布式锁。
-相关命令介绍SETNX命令（SET if Not eXists）语法：SETNX key value功能：当且仅当 key 不存在，将 key 的值设为 value ，并返回1；若给定的 key 已经存在，则 SETNX 不做任何动作，并返回0。
-GETSET命令语法：GETSET key value功能：将给定 key 的值">
+  <meta name="description" content="分布式锁有哪些问题？
+避免多个client获得锁
+获得锁的client崩溃了，如何解锁？
+如何快速获得、释放锁？
+
+Redis是内存存储的数据结构数据库，采用单进程单线程模式，使并发访问变成了串行访问，避免了并发的竞态条件。以下是涉及到的几个命令：
+相关命令
+SETNX（SET if Not eXists）  
+
+Set key to hold string value if key does n">
 <meta property="og:type" content="article">
-<meta property="og:title" content="古韦">
-<meta property="og:url" content="http://yoursite.com/2017/03/15/java实现redis分布式锁/index.html">
+<meta property="og:title" content="redis实现分布式锁">
+<meta property="og:url" content="http://yoursite.com/2017/01/16/redis实现分布式锁/index.html">
 <meta property="og:site_name" content="古韦">
-<meta property="og:description" content="Redis提供一些命令SETNX，GETSET，可以方便实现分布式锁。
-相关命令介绍SETNX命令（SET if Not eXists）语法：SETNX key value功能：当且仅当 key 不存在，将 key 的值设为 value ，并返回1；若给定的 key 已经存在，则 SETNX 不做任何动作，并返回0。
-GETSET命令语法：GETSET key value功能：将给定 key 的值">
-<meta property="og:updated_time" content="2017-03-15T12:00:21.332Z">
+<meta property="og:description" content="分布式锁有哪些问题？
+避免多个client获得锁
+获得锁的client崩溃了，如何解锁？
+如何快速获得、释放锁？
+
+Redis是内存存储的数据结构数据库，采用单进程单线程模式，使并发访问变成了串行访问，避免了并发的竞态条件。以下是涉及到的几个命令：
+相关命令
+SETNX（SET if Not eXists）  
+
+Set key to hold string value if key does n">
+<meta property="og:updated_time" content="2017-03-16T11:21:10.110Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="古韦">
-<meta name="twitter:description" content="Redis提供一些命令SETNX，GETSET，可以方便实现分布式锁。
-相关命令介绍SETNX命令（SET if Not eXists）语法：SETNX key value功能：当且仅当 key 不存在，将 key 的值设为 value ，并返回1；若给定的 key 已经存在，则 SETNX 不做任何动作，并返回0。
-GETSET命令语法：GETSET key value功能：将给定 key 的值">
+<meta name="twitter:title" content="redis实现分布式锁">
+<meta name="twitter:description" content="分布式锁有哪些问题？
+避免多个client获得锁
+获得锁的client崩溃了，如何解锁？
+如何快速获得、释放锁？
+
+Redis是内存存储的数据结构数据库，采用单进程单线程模式，使并发访问变成了串行访问，避免了并发的竞态条件。以下是涉及到的几个命令：
+相关命令
+SETNX（SET if Not eXists）  
+
+Set key to hold string value if key does n">
   
   
     <link rel="icon" href="/css/images/favicon.ico">
@@ -71,34 +98,63 @@ GETSET命令语法：GETSET key value功能：将给定 key 的值">
     </nav>
 </header>
       <div id="main" class="wrapper">
-        <div id="primary" class="site-content"><div id="content" role="main"><article id="post-java实现redis分布式锁" class="post-java实现redis分布式锁 post type-post status-publish format-standard hentry">
+        <div id="primary" class="site-content"><div id="content" role="main"><article id="post-redis实现分布式锁" class="post-redis实现分布式锁 post type-post status-publish format-standard hentry">
     <!---->
 
       <header class="entry-header">
         
+        
+  
+    <h1 class="entry-title article-title">
+      redis实现分布式锁
+    </h1>
+  
+
+        
         <div class="comments-link">
             
-            <a href="/2017/03/15/java实现redis分布式锁/#comments" class="leave-reply">Reply</a>
+            <a href="/2017/01/16/redis实现分布式锁/#comments" class="leave-reply">Reply</a>
             
-            <a href="javascript:void(0);" data-url="http://yoursite.com/2017/03/15/java实现redis分布式锁/" data-id="cj0ax19a90002u0lqedo3pu41" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://yoursite.com/2017/01/16/redis实现分布式锁/" data-id="cj0cb4mjw00027clqm555vldx" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
     <div class="entry-content">
       
-        <p>Redis提供一些命令SETNX，GETSET，可以方便实现分布式锁。</p>
-<h2 id="相关命令介绍"><a href="#相关命令介绍" class="headerlink" title="相关命令介绍"></a>相关命令介绍</h2><p>SETNX命令（SET if Not eXists）<br>语法：<br>SETNX key value<br>功能：<br>当且仅当 key 不存在，将 key 的值设为 value ，并返回1；若给定的 key 已经存在，则 SETNX 不做任何动作，并返回0。</p>
-<p>GETSET命令<br>语法：<br>GETSET key value<br>功能：<br>将给定 key 的值设为 value ，并返回 key 的旧值 (old value)，当 key 存在但不是字符串类型时，返回一个错误，当key不存在时，返回nil。</p>
-<p>GET命令<br>语法：<br>GET key<br>功能：<br>返回 key 所关联的字符串值，如果 key 不存在那么返回特殊值 nil 。</p>
-<p>DEL命令<br>语法：<br>DEL key [KEY …]<br>功能：<br>删除给定的一个或多个 key ,不存在的 key 会被忽略。</p>
+        <h2 id="分布式锁有哪些问题？"><a href="#分布式锁有哪些问题？" class="headerlink" title="分布式锁有哪些问题？"></a>分布式锁有哪些问题？</h2><ul>
+<li>避免多个client获得锁</li>
+<li>获得锁的client崩溃了，如何解锁？</li>
+<li>如何快速获得、释放锁？</li>
+</ul>
+<p>Redis是内存存储的数据结构数据库，采用单进程单线程模式，使并发访问变成了串行访问，避免了并发的竞态条件。以下是涉及到的几个命令：</p>
+<h2 id="相关命令"><a href="#相关命令" class="headerlink" title="相关命令"></a>相关命令</h2><ul>
+<li>SETNX（SET if Not eXists）  </li>
+</ul>
+<p>Set key to hold string value if key does not exist. In that case, it is equal to SET. When key already holds a value, no operation is performed. SETNX is short for “SET if Not eXists”.</p>
+<p>Return value<br>Integer reply, specifically:<br>1 if the key was set<br>0 if the key was not set</p>
+<ul>
+<li>GETSET</li>
+</ul>
+<p>Atomically sets key to value and returns the old value stored at key. Returns an error when key exists but does not hold a string value.</p>
+<p>Return value<br>Bulk string reply: the old value stored at key, or nil when key did not exist.</p>
+<ul>
+<li>GET</li>
+</ul>
+<p>Get the value of key. If the key does not exist the special value nil is returned.<br>An error is returned if the value stored at key is not a string, because GET only handles string values.</p>
+<p>Return value<br>Bulk string reply: the value of key, or nil when key does not exist.</p>
+<ul>
+<li>DEL</li>
+</ul>
+<p>Removes the specified keys. A key is ignored if it does not exist.</p>
+<p>Return value<br>Integer reply: The number of keys that were removed.</p>
 
       
     </div><!-- .entry-content -->
 
     <footer class="entry-meta">
-    <a href="/2017/03/15/java实现redis分布式锁/">
-    <time datetime="2017-03-15T09:38:31.513Z" class="entry-date">
-        2017-03-15
+    <a href="/2017/01/16/redis实现分布式锁/">
+    <time datetime="2017-01-16T12:49:47.000Z" class="entry-date">
+        2017-01-16
     </time>
 </a>
     
@@ -109,7 +165,7 @@ GETSET命令语法：GETSET key value功能：将给定 key 的值">
 
     
   <span class="article-delim">&#8226;</span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/redis/">redis</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/redis-java/">redis, java</a></li></ul>
 
     </footer>
 </article>
@@ -131,7 +187,7 @@ GETSET命令语法：GETSET key value功能：将给定 key 的值">
 
 <section id="comments">
   <!-- 多说评论框 start -->
-  <div class="ds-thread" data-thread-key="post-java实现redis分布式锁" data-title="" data-url="http://yoursite.com/2017/03/15/java实现redis分布式锁/"></div>
+  <div class="ds-thread" data-thread-key="post-redis实现分布式锁" data-title="redis实现分布式锁" data-url="http://yoursite.com/2017/01/16/redis实现分布式锁/"></div>
   <!-- 多说评论框 end -->
   <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
   <script type="text/javascript">
@@ -165,7 +221,7 @@ GETSET命令语法：GETSET key value功能：将给定 key 的值">
       <ul>
         
           <li>
-            <a href="/2017/03/15/java实现redis分布式锁/">(no title)</a>
+            <a href="/2017/01/16/redis实现分布式锁/">redis实现分布式锁</a>
           </li>
         
           <li>
@@ -188,7 +244,7 @@ GETSET命令语法：GETSET key value功能：将给定 key 的值">
       <aside class="widget">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget-content tagcloud">
-      <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/tagtest/" style="font-size: 10px;">tagtest</a>
+      <a href="/tags/redis-java/" style="font-size: 10px;">redis, java</a> <a href="/tags/tagtest/" style="font-size: 10px;">tagtest</a>
     </div>
   </aside>
   
